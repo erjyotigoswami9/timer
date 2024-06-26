@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+            background-color: lightcyan;
+            text-align: center;
+            border: 8px solid rgb(73, 182, 131);
+            height: 98vh;
+        }
+        h1{
+            font-size: 60px;
+            color: rgb(59, 66, 207);
+            text-decoration: underline;
+            letter-spacing: 1px;
+            font-weight: 600;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        .child1{
+            margin-top: 30px;
+            border: 10px solid rgba(101, 188, 152, 0.468);
+            width: fit-content;
+            margin: auto;
+            height: max-content;
+            padding-top: 20px;
+            padding-bottom: 40px;
+            padding-left: 20px;
+            padding-right: 20px;
+            border-radius: 10px;
+        }
+        .child1 input{
+            margin-top: 30px;
+            font-size: 30px;
+            font-weight: 600;
+            width: 100px;
+            height: 40px;
+            color: rgba(219, 232, 34, 0.793);
+            margin-left: 10px;
+            margin-right: 10px;
+            text-align: center;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-left: 10px;
+            padding-right: 10px;
+            border: none;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            border-radius: 25px;
+        }
+        .child1 .spanText{
+            font-size: 15px;
+            font-weight: 500;
+            color: rgb(80, 204, 64);
+        }
+        .child1 button{
+            font-size: 30px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            color: brown;
+            margin-left: 20px;
+            margin-right: 20px;
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            background-color: rgba(191, 197, 100, 0.212);
+            border-radius: 50px;
+            border: none;
+            box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+        }
+        .child1 button:hover{
+            cursor: pointer;
+        }
+        .startBtn:hover{
+            color: white;
+        }
+        .pauseBtn:hover{
+            color: white;
+        }
+        .resetBtn:hover{
+            color: whitesmoke;
+        }
+    </style>
+</head>
+<body>
+    <div class="parentDivision">
+        <h1>TIMER</h1>
+
+        <div class="child1">
+
+            <input type="number" placeholder="hour" value="0" id="hourNo" oninput="checkNegativeHour(event)"/> <span class="spanText"> Hour </span>
+            <input type="number" placeholder="min" value="0" id="minuteNo" oninput="checkNegativeMin(event)" /> <span class="spanText"> Minute </span>
+            <input type="number" placeholder="sec" value="0" id="secNo" oninput="checkNegativeSec(event)"/> <span class="spanText"> Second </span>
+            <br><br><br>
+            <br>
+            <hr>
+            <br><br>
+            <button class="startBtn" style="background-color: rgba(172, 255, 47, 0.463);">Start</button>
+            <button class="pauseBtn" style="background-color: rgba(255, 0, 0, 0.27);">Pause</button>
+            <button class="resetBtn" style="background-color: wheat;">Reset</button>
+        </div>
+    </div>
+</body>
+<script>
+
+    var hourNo = document.getElementById("hourNo") ;
+    var minNo = document.getElementById("minuteNo") ;
+    var secNo = document.getElementById("secNo") ;
+    var startBtn = document.querySelector(".startBtn") ;
+    var pauseBtn = document.querySelector(".pauseBtn") ;
+    var resetBtn = document.querySelector(".resetBtn") ;
+
+    startBtn.addEventListener("click",startFunc) ;
+    pauseBtn.addEventListener("click",pauseFunc) ;
+    resetBtn.addEventListener("click",resetFunc) ;
+
+    var hour = 0 ;
+    var min = 0 ;
+    var sec = 0 ;
+
+    function checkNegativeHour(event){
+        event.preventDefault();
+        if(Number(hourNo.value)<0){
+            alert("You have entered negative no!  positive numbers only") ;
+            hourNo.value = 0 ;
+        }
+    }
+    function checkNegativeMin(event){
+        event.preventDefault() ;
+        if(Number(minNo.value)<0){
+            alert("Pls enter non-negative values... positive numbers only") ;
+            minNo.value = 0 ;
+        }
+    }
+    function checkNegativeSec(event){
+        event.preventDefault();
+        if(Number(secNo.value)<0){
+            alert("Positive values allowed only !  positive numbers only") ;
+            secNo.value = 0 ;
+        }
+    }
+   
+    var total_sec = 0 ;
+
+    function startFunc(){
+       
+        hour = Number(hourNo.value) ;
+        min = Number(minNo.value) ;
+        sec = Number(secNo.value) ;
+        if(hour<0) hour = 0;
+        if(min<0) min = 0 ;
+        if(sec<0) min = 0;
+        console.log("hour : ",hour," ,minute : ",min," ,second : ",sec) ;
+
+        //60000sec   // 12000min
+        while(sec>=60 && sec>=0){
+         min+=Math.floor(sec/60) ;  
+         sec=sec-Math.floor(sec/60)*60 ;
+         } 
+        while(min>=60 && min>=0){
+         hour+=Math.floor(min/60) ;
+         min=min-Math.floor(min/60)*60 ;
+        }
+        hourNo.value=hour ;
+        minNo.value = min ;
+        secNo.value = sec ;
+
+       console.log("hour : ",hour," ,minute : ",min," ,second : ",sec) ;
+       total_sec = sec + min*60 + hour*60*60 ;
+       console.log(total_sec)
+       if(hour>=0&&min>=0&&sec>=0 )
+         updateTime1() ;
+       else {
+             if(Number(hourNo.value)<0) hourNo.value = 0 ;
+             if(Number(minNo.value)<0) minNo.value = 0 ;
+             if(Number(secNo.value)<0) secNo.value = 0 ;
+            alert("Pls enter non-negative values and positive numbers only !") ;
+       }
+
+    }
+    function pauseFunc(){
+      clearInterval(a1) ;
+      hourNo.value = hour ;
+      minNo.value = min ;
+      secNo.value = sec ;
+    }
+    function resetFunc(){
+        clearInterval(a1) ;
+       hourNo.value = 0 ;
+       minNo.value = 0 ;
+       secNo.value = 0 ;
+    }
+
+    function updateTime1(){
+        a1 = setInterval(function(){
+            updateSecFunc() ;
+        },1000);
+    }
+   
+    function updateSecFunc(){
+         // 6000sec
+         if(total_sec==0) {
+           clearInterval(a1) ;
+           console.log("timer completed...");
+           alert("Time Over!");
+         }
+         else{
+            // 1 hour, 2 minutes, 12seconds 
+
+            secNo.value = changeSecond() ;
+            minNo.value = changeMinutee() ;
+            hourNo.value = changeHour() ;
+
+            total_sec-- ;
+         }
+
+         function changeSecond(){
+            if(sec==0){
+               min-- ; 
+               sec = 60 ; 
+            }
+            if(sec<=60){
+                sec-- ;
+                return sec ;
+            }
+         }
+         function changeMinutee(){
+            if(min==-1){
+              hour-- ;
+              min=59 ;
+            }
+            if(min<60){
+                return min ;
+            }
+         }
+         function changeHour(){
+            if(hour<0){
+                clearInterval(a1) ;
+                console.log("timer completed...");
+                alert("Time Over!")
+            }
+            else{
+                return hour ;
+            }
+         }
+    }
+</script>
+</html>
